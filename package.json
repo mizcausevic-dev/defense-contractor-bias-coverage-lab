@@ -1,0 +1,17 @@
+{
+  "name": "defense-contractor-bias-coverage-lab",
+  "version": "0.1.0",
+  "description": "DefenseTech bias-coverage scaffolding for population-level analysis of AI used in DIB workforce decisions — veteran preference (VEVRAA / 38 USC 4212), security-clearance access patterns (EO 12968 + adjudicative guidelines), sub-contractor flow-down equity, equal-pay (29 CFR Part 1602), Section 503 disability, NISPOM insider-threat program disparities.",
+  "type": "module",
+  "main": "src/index.mjs",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "validate": "node src/validate.mjs",
+    "build:examples": "node src/build-examples.mjs"
+  },
+  "dependencies": { "ajv": "^8.17.1", "ajv-formats": "^3.0.1" },
+  "license": "MIT",
+  "homepage": "https://github.com/mizcausevic-dev/defense-contractor-bias-coverage-lab",
+  "repository": { "type": "git", "url": "git+https://github.com/mizcausevic-dev/defense-contractor-bias-coverage-lab.git" },
+  "keywords": ["defensetech", "bias-coverage", "dib", "vevraa", "ofccp", "security-clearance", "equal-pay", "kinetic-gain-protocol-suite"]
+}

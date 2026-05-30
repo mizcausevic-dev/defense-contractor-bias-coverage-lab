@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.kineticgain.com/defense-contractor-bias-coverage-lab/v0.1",
+  "title": "Defense Contractor AI Bias Coverage Report",
+  "type": "object",
+  "required": ["report_id", "schema_version", "contractor", "scope", "population_metrics", "coverage_dimensions"],
+  "additionalProperties": false,
+  "properties": {
+    "report_id": { "type": "string", "minLength": 1 },
+    "schema_version": { "const": "0.1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "framing_note": { "type": "string" },
+    "contractor": {
+      "type": "object",
+      "required": ["cage_code_tokenized", "ai_systems_in_scope"],
+      "properties": {
+        "cage_code_tokenized": { "type": "string" },
+        "ai_systems_in_scope": { "type": "array", "items": { "type": "object" }, "minItems": 1 }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": ["decision_domain", "measurement_window"],
+      "properties": {
+        "decision_domain": { "enum": [
+          "hiring", "promotion", "security-clearance-access-decision", "subcontractor-flow-down",
+          "compensation", "training-allocation", "termination", "insider-threat-program-flag"
+        ] },
+        "measurement_window": {
+          "type": "object",
+          "required": ["from", "to"],
+          "properties": {
+            "from": { "type": "string", "format": "date" },
+            "to": { "type": "string", "format": "date" }
+          }
+        }
+      }
+    },
+    "population_metrics": {
+      "type": "object",
+      "required": ["population_size", "ai_assisted_decision_count"],
+      "properties": {
+        "population_size": { "type": "integer", "minimum": 0 },
+        "ai_assisted_decision_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "coverage_dimensions": {
+      "type": "array", "minItems": 1,
+      "items": { "$ref": "#/$defs/coverageDimension" }
+    },
+    "interventions_recommended": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  },
+  "$defs": {
+    "coverageDimension": {
+      "type": "object",
+      "required": ["dimension_id", "regulatory_basis", "subgroups", "metric_kind", "outcome"],
+      "properties": {
+        "dimension_id": { "enum": [
+          "veteran-status-vevraa",
+          "protected-veteran-status-vevraa-4212",
+          "disability-status-section-503",
+          "race-ethnicity-eeo-1",
+          "gender-eeo-1",
+          "national-origin-eeo-1",
+          "age-adea",
+          "security-clearance-tier-distribution",
+          "clearance-denial-rate",
+          "polygraph-success-rate",
+          "compensation-equity-equal-pay-act",
+          "subcontractor-sb-sdb-vosb-classification",
+          "insider-threat-flag-rate",
+          "promotion-velocity",
+          "training-spend-per-capita"
+        ] },
+        "regulatory_basis": {
+          "type": "array", "minItems": 1,
+          "items": { "enum": [
+            "vevraa-38-usc-4212",
+            "section-503-rehabilitation-act",
+            "title-vii-civil-rights-act",
+            "adea-29-usc-621",
+            "equal-pay-act-29-cfr-part-1602",
+            "ofccp-41-cfr-60",
+            "eo-11246-equal-employment-opportunity",
+            "eo-12968-personnel-security-access",
+            "adjudicative-guidelines-32-cfr-147",
+            "ada-amendments-act",
+            "nispom-insider-threat-32-cfr-117",
+            "service-contract-act-41-usc-6701",
+            "davis-bacon-40-usc-3141",
+            "small-business-act-15-usc-631"
+          ] }
+        },
+        "subgroups": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+        "metric_kind": { "enum": [
+          "selection-rate", "adverse-impact-ratio", "denial-rate",
+          "compensation-gap-percent", "promotion-velocity-ratio",
+          "flow-down-coverage-percent", "flag-rate-per-1000", "training-spend-ratio"
+        ] },
+        "outcome": { "enum": ["within-tolerance", "approaching-threshold", "exceeds-threshold", "insufficient-data"] },
+        "measurement": {
+          "type": "object",
+          "properties": {
+            "comparator_subgroup": { "type": "string" },
+            "reference_subgroup": { "type": "string" },
+            "value": { "type": "number" },
+            "tolerance_band": { "type": "object", "properties": { "lower": { "type": "number" }, "upper": { "type": "number" } } }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}
